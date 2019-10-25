@@ -1,0 +1,67 @@
+CREATE DATABASE fastrade;
+
+USE fastrade;
+
+CREATE TABLE Tipo_Usuario(
+Id_Tipo_Usuario INT IDENTITY PRIMARY KEY NOT NULL,
+Tipo VARCHAR(255)
+
+);
+
+CREATE TABLE Endereco(
+Id_Endereco INT IDENTITY PRIMARY KEY NOT NULL,
+Rua VARCHAR(255),
+Bairro VARCHAR(255),
+Numero INT,
+Estado CHAR(2),
+CEP VARCHAR
+);
+CREATE TABLE Cat_Produto(
+Id_Cat_Produto INT IDENTITY PRIMARY KEY NOT NULL,
+Tipo VARCHAR(255),
+
+);
+
+CREATE TABLE Produto(
+Id_Produto INT IDENTITY PRIMARY KEY NOT NULL,
+Id_Cat_Produto INT FOREIGN KEY REFERENCES Cat_Produto(Id_Cat_Produto),
+Nome VARCHAR (255),
+Validade VARCHAR(255)
+);
+CREATE TABLE Receita(
+Id_Receita INT IDENTITY PRIMARY KEY NOT NULL,
+Nome VARCHAR(50)
+);
+CREATE TABLE Produto_Receita(
+Id_Produto_Receita INT IDENTITY PRIMARY KEY NOT NULL,
+Id_Produto INT FOREIGN KEY REFERENCES Produto(Id_Produto),
+Id_Receita INT FOREIGN KEY REFERENCES Receita(Id_Receita)
+);
+CREATE TABLE Usuario(
+Id_Usuario INT IDENTITY PRIMARY KEY NOT NULL,
+Id_Endereco     INT FOREIGN KEY REFERENCES Endereco(Id_Endereco),
+Id_Tipo_Usuario INT FOREIGN KEY REFERENCES Tipo_Usuario(Id_Tipo_Usuario),
+Nome_Razao_Social VARCHAR (255),
+CPF_CNPJ VARCHAR(14),
+Email VARCHAR(255),
+Senha VARCHAR(255),
+Celular VARCHAR (255),
+);
+CREATE TABLE Pedido(
+Id_Pedido INT IDENTITY PRIMARY KEY NOT NULL,
+Id_Produto     INT FOREIGN KEY REFERENCES Produto(Id_Produto),
+Id_Usuario     INT FOREIGN KEY REFERENCES Usuario(Id_Usuario),
+Quantidade INT
+);
+CREATE TABLE Oferta(
+Id_Oferta INT IDENTITY PRIMARY KEY NOT NULL,
+Id_Produto     INT FOREIGN KEY REFERENCES Produto(Id_Produto),
+Id_Usuario     INT FOREIGN KEY REFERENCES Usuario(Id_Usuario),
+Quantidade INT,
+Preco VARCHAR(255),
+Foto_Url TEXT
+);
+
+ALTER TABLE Endereco DROP COLUMN CEP;
+
+ALTER TABLE Endereco ADD CEP VARCHAR(9);
